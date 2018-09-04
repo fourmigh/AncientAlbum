@@ -57,7 +57,12 @@ class LocalImageHelper private constructor(private val context: Context) {
                 //获取目录名
                 val folder = file.parentFile.name
 
-                val exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
+                val exif: ExifInterface
+                try {
+                    exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
+                } catch (e: Exception) {
+                    continue
+                }
                 val photoFile = Photo(uri, thumbUri!!, exif)
 
                 paths.add(photoFile)

@@ -1,5 +1,7 @@
 package org.caojun.ancientalbum.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
@@ -82,4 +84,11 @@ class PhotoActivity: BaseAppCompatActivity() {
         val size = LocalImageHelper.instance.getFolder(title).size
         return "(${position + 1}/$size)$title"
     }
+
+//    override fun onBackPressed() {
+//        val intent = Intent()
+//        intent.putExtra(Position, viewPager.currentItem)
+//        setResult(Activity.RESULT_OK, intent)
+//        finish()
+//    }
 }

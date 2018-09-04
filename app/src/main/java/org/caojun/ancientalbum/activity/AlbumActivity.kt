@@ -14,7 +14,7 @@ import org.caojun.ancientalbum.adapter.PhotoItem
 import org.caojun.ancientalbum.bean.Photo
 import org.caojun.ancientalbum.utils.LocalImageHelper
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.uiThread
 
 /**
@@ -24,6 +24,7 @@ class AlbumActivity: BaseAppCompatActivity() {
 
     companion object {
         const val Folder_Name = "Folder_Name"
+        const val RequestCode_ViewPage = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +61,9 @@ class AlbumActivity: BaseAppCompatActivity() {
                         intent.putExtra(PhotoActivity.Folder_Name, toolbar.title)
                         intent.putExtra(PhotoActivity.Position, position)
                         val option = ActivityOptions.makeSceneTransitionAnimation(this@AlbumActivity, view, "transition")
-                        startActivity(intent, option.toBundle())
+                        startActivityForResult(intent, RequestCode_ViewPage, option.toBundle())
                     } else {
-                        startActivity<PhotoActivity>(
+                        startActivityForResult<PhotoActivity>(RequestCode_ViewPage,
                                 PhotoActivity.Folder_Name to toolbar.title,
                                 PhotoActivity.Position to position)
                     }
@@ -70,4 +71,13 @@ class AlbumActivity: BaseAppCompatActivity() {
             }
         }
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if (requestCode == RequestCode_ViewPage && data != null) {
+//            val position = data.getIntExtra(PhotoActivity.Position, 0)
+//            gridView.smoothScrollToPosition(position)
+//            return
+//        }
+//        super.onActivityResult(requestCode, resultCode, data)
+//    }
 }

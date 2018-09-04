@@ -10,27 +10,26 @@
         android:src="@drawable/ic_launcher"
         android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/tvTopLeft"
-        style="@style/Watermark"
-        android:text="TopLeft" />
+    <!--<org.caojun.ancientalbum.widget.DigitTextView-->
+        <!--android:id="@+id/tvTopLeft"-->
+        <!--style="@style/Watermark"-->
+        <!--android:text="TopLeft" />-->
 
-    <TextView
-        android:id="@+id/tvTopRight"
-        style="@style/Watermark"
-        android:layout_alignParentRight="true"
-        android:text="TopRight" />
+    <!--<org.caojun.ancientalbum.widget.DigitTextView-->
+        <!--android:id="@+id/tvTopRight"-->
+        <!--style="@style/Watermark"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:text="TopRight" />-->
 
-    <TextView
-        android:id="@+id/tvBottomLeft"
-        style="@style/Watermark"
-        android:layout_alignParentBottom="true"
-        android:text="BottomLeft" />
+    <!--<org.caojun.ancientalbum.widget.DigitTextView-->
+        <!--android:id="@+id/tvBottomLeft"-->
+        <!--style="@style/Watermark"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:text="BottomLeft" />-->
 
-    <TextView
+    <org.caojun.ancientalbum.widget.DigitTextView
         android:id="@+id/tvBottomRight"
         style="@style/Watermark"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="BottomRight" />
+        android:layout_alignParentRight="true" />
 </RelativeLayout>
