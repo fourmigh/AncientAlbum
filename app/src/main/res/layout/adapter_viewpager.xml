@@ -12,18 +12,21 @@
 
     <!--<org.caojun.ancientalbum.widget.DigitTextView-->
         <!--android:id="@+id/tvTopLeft"-->
-        <!--style="@style/Watermark"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
         <!--android:text="TopLeft" />-->
-
+    <!---->
     <!--<org.caojun.ancientalbum.widget.DigitTextView-->
         <!--android:id="@+id/tvTopRight"-->
-        <!--style="@style/Watermark"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
         <!--android:layout_alignParentRight="true"-->
         <!--android:text="TopRight" />-->
 
     <!--<org.caojun.ancientalbum.widget.DigitTextView-->
         <!--android:id="@+id/tvBottomLeft"-->
-        <!--style="@style/Watermark"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
         <!--android:layout_alignParentBottom="true"-->
         <!--android:text="BottomLeft" />-->
 
@@ -31,5 +34,6 @@
         android:id="@+id/tvBottomRight"
         style="@style/Watermark"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:text="BottomRight" />
 </RelativeLayout>

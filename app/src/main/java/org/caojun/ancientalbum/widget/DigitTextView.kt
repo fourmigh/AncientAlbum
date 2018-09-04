@@ -12,6 +12,9 @@ class DigitTextView: TextView {
     constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr) {
-        typeface = Typeface.createFromAsset(context.assets, "digit.TTF")
+        try {
+            typeface = Typeface.createFromAsset(context.assets, "digit.TTF")
+        } catch (e: Exception) {
+        }
     }
 }

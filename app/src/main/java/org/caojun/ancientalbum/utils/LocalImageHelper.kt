@@ -10,6 +10,7 @@ import java.util.ArrayList
 import java.util.HashMap
 import android.net.Uri
 import org.caojun.utils.FileUtils
+import java.io.IOException
 
 
 class LocalImageHelper private constructor(private val context: Context) {
@@ -60,7 +61,7 @@ class LocalImageHelper private constructor(private val context: Context) {
                 val exif: ExifInterface
                 try {
                     exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
-                } catch (e: Exception) {
+                } catch (e: IOException) {
                     continue
                 }
                 val photoFile = Photo(uri, thumbUri!!, exif)

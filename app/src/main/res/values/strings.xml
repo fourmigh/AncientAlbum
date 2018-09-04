@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Ancient Album</string>
     <string name="initializing">%s Initializing...</string>
+    <string name="share">Share</string>
 </resources>

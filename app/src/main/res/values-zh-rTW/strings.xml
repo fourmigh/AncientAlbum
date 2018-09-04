@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">老相册</string>
     <string name="initializing">%s初始化中……</string>
+    <string name="share">分享</string>
 </resources>

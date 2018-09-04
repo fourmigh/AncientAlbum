@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_photo.*
 import kotlinx.android.synthetic.main.layout_titlebar.*
@@ -91,4 +93,19 @@ class PhotoActivity: BaseAppCompatActivity() {
 //        setResult(Activity.RESULT_OK, intent)
 //        finish()
 //    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.photo, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_share -> {
+                //TODO
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
