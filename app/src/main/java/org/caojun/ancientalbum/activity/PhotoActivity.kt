@@ -51,7 +51,7 @@ class PhotoActivity: BaseAppCompatActivity() {
     private fun readPhotos(position: Int) {
         doAsync {
 
-            val photos = LocalImageHelper.instance.folders[title]
+            val photos = LocalImageHelper.instance.getFolder(title)
 
             uiThread {
                 viewPager.adapter = object : CommonPagerAdapter<Photo>(photos) {
@@ -79,7 +79,7 @@ class PhotoActivity: BaseAppCompatActivity() {
     }
 
     private fun getTitle(position: Int): String {
-        val size = LocalImageHelper.instance.folders[title]?.size?:0
+        val size = LocalImageHelper.instance.getFolder(title).size
         return "(${position + 1}/$size)$title"
     }
 }

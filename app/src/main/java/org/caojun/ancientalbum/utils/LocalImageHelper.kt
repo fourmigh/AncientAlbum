@@ -1,30 +1,28 @@
 package org.caojun.ancientalbum.utils
 
 import android.content.Context
+import android.media.ExifInterface
 import android.provider.MediaStore
 import android.text.TextUtils
 import org.caojun.ancientalbum.bean.Photo
 import java.io.File
 import java.util.ArrayList
 import java.util.HashMap
+import android.net.Uri
+import org.caojun.utils.FileUtils
+
 
 class LocalImageHelper private constructor(private val context: Context) {
-    val checkedItems: List<Photo> = ArrayList()
 
-    //当前选中得图片个数
-    var currentSize: Int = 0
+    private val paths: MutableList<Photo> = ArrayList()
 
-    internal val paths: MutableList<Photo> = ArrayList()
+    private val folders: MutableMap<String, MutableList<Photo>> = HashMap()
 
-    internal val folders: MutableMap<String, MutableList<Photo>> = HashMap()
-
-    val folderMap: Map<String, MutableList<Photo>>
+    val getFolders: Map<String, MutableList<Photo>>
         get() = folders
 
-    val isInited: Boolean
+    private val isInited: Boolean
         get() = paths.size > 0
-
-    var isResultOk: Boolean = false
 
     private var isRunning = false
 
@@ -59,13 +57,8 @@ class LocalImageHelper private constructor(private val context: Context) {
                 //获取目录名
                 val folder = file.parentFile.name
 
-//                var degree = cursor.getInt(2)
-//                if (degree != 0) {
-//                    degree += 180
-//                }
-//                localFile.orientation = 360 - degree
-//                val photoFile = Photo(uri, thumbUri!!, 360 - degree)
-                val photoFile = Photo(uri, thumbUri!!)
+                val exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
+                val photoFile = Photo(uri, thumbUri!!, exif)
 
                 paths.add(photoFile)
                 //判断文件夹是否已经存在
@@ -104,70 +97,17 @@ class LocalImageHelper private constructor(private val context: Context) {
         return folders[folder]!!
     }
 
-    //    public void clear(){
-    //        checkedItems.clear();
-    //        currentSize=(0);
-    //        String foloder= AppContext.getInstance().getCachePath()
-    //                + "/PostPicture/";
-    //        File savedir = new File(foloder);
-    //        if (savedir.exists()) {
-    //            deleteFile(savedir);
-    //        }
-    //    }
-    //    public void deleteFile(File file) {
-    //
-    //        if (file.exists()) {
-    //            if (file.isFile()) {
-    //                file.delete();
-    //            } else if (file.isDirectory()) {
-    //                File files[] = file.listFiles();
-    //                for (int i = 0; i < files.length; i++) {
-    //                    deleteFile(files[i]);
-    //                }
-    //            }
-    //        } else {
-    //        }
-    //    }
-//    class LocalFile {
-//        var originalUri: String? = null//原图URI
-//        var thumbnailUri: String? = null//缩略图URI
-//        var orientation: Int = 0//图片旋转角度
-//
-//    }
-
     companion object {
         lateinit var instance: LocalImageHelper
             private set
-        //    public String getCameraImgPath() {
-        //        return CameraImgPath;
-        //    }
 
-        //    public String setCameraImgPath() {
-        //        String foloder= AppContext.getInstance().getCachePath()
-        //                + "/PostPicture/";
-        //        File savedir = new File(foloder);
-        //        if (!savedir.exists()) {
-        //            savedir.mkdirs();
-        //        }
-        //        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
-        //                .format(new Date());
-        //        // 照片命名
-        //        String picName =  timeStamp + ".jpg";
-        //        //  裁剪头像的绝对路径
-        //        CameraImgPath = foloder + picName;
-        //        return  CameraImgPath;
-        //    }
-
-        //拍照时指定保存图片的路径
-        //    private String CameraImgPath;
         //大图遍历字段
-        private val STORE_IMAGES = arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION)
+        private val STORE_IMAGES = arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA)
         //小图遍历字段
         private val THUMBNAIL_STORE_IMAGE = arrayOf(MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.DATA)
 
         fun init(context: Context) {
             instance = LocalImageHelper(context)
-//            Thread(Runnable { instance.initImage() }).start()
             instance.initImage()
         }
     }

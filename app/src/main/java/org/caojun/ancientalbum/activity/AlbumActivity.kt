@@ -44,7 +44,7 @@ class AlbumActivity: BaseAppCompatActivity() {
     private fun readAlbum() {
         doAsync {
 
-            val photos = LocalImageHelper.instance.folders[toolbar.title]
+            val photos = LocalImageHelper.instance.getFolder(toolbar.title.toString())
 
             uiThread {
                 gridView.adapter = object : CommonAdapter<Photo>(photos, 1) {

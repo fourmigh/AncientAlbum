@@ -43,7 +43,7 @@ class FoldersActivity: BaseAppCompatActivity() {
 
             val folders = ArrayList<Folder>()
 
-            for ((key, value) in LocalImageHelper.instance.folders) {
+            for ((key, value) in LocalImageHelper.instance.getFolders) {
                 val uri = value[0].thumbnailUri
                 val size = value.size
                 val folder = Folder(uri, key, size)

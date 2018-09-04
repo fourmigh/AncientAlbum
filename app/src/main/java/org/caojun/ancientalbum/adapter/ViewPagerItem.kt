@@ -1,6 +1,7 @@
 package org.caojun.ancientalbum.adapter
 
 import android.content.Context
+import android.media.ExifInterface
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import org.caojun.adapter.bean.AdapterItem
 import org.caojun.ancientalbum.R
 import org.caojun.ancientalbum.bean.Photo
+import org.caojun.utils.TimeUtils
 
 class ViewPagerItem(private val context: Context): AdapterItem<Photo> {
 
@@ -34,5 +36,11 @@ class ViewPagerItem(private val context: Context): AdapterItem<Photo> {
 
     override fun handleData(t: Photo, position: Int) {
         Glide.with(context).load(t.originalUri).into(imageView)
+
+        val date = t.exif.getAttribute(ExifInterface.TAG_DATETIME)
+        tvTopLeft.text = null
+        tvTopRight.text = null
+        tvBottomLeft.text = null
+        tvBottomRight.text = date
     }
 }
