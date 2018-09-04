@@ -1,25 +1,24 @@
 package org.caojun.ancientalbum.utils
 
 import android.content.Context
-import android.database.Cursor
 import android.provider.MediaStore
 import android.text.TextUtils
-import org.caojun.ancientalbum.bean.PhotoFile
+import org.caojun.ancientalbum.bean.Photo
 import java.io.File
 import java.util.ArrayList
 import java.util.HashMap
 
 class LocalImageHelper private constructor(private val context: Context) {
-    val checkedItems: List<PhotoFile> = ArrayList()
+    val checkedItems: List<Photo> = ArrayList()
 
     //当前选中得图片个数
     var currentSize: Int = 0
 
-    internal val paths: MutableList<PhotoFile> = ArrayList()
+    internal val paths: MutableList<Photo> = ArrayList()
 
-    internal val folders: MutableMap<String, MutableList<PhotoFile>> = HashMap()
+    internal val folders: MutableMap<String, MutableList<Photo>> = HashMap()
 
-    val folderMap: Map<String, MutableList<PhotoFile>>
+    val folderMap: Map<String, MutableList<Photo>>
         get() = folders
 
     val isInited: Boolean
@@ -60,22 +59,20 @@ class LocalImageHelper private constructor(private val context: Context) {
                 //获取目录名
                 val folder = file.parentFile.name
 
-//                val localFile = PhotoFile()
-//                localFile.originalUri = uri
-//                localFile.thumbnailUri = thumbUri
-                var degree = cursor.getInt(2)
-                if (degree != 0) {
-                    degree += 180
-                }
+//                var degree = cursor.getInt(2)
+//                if (degree != 0) {
+//                    degree += 180
+//                }
 //                localFile.orientation = 360 - degree
-                val photoFile = PhotoFile(uri, thumbUri!!, 360 - degree)
+//                val photoFile = Photo(uri, thumbUri!!, 360 - degree)
+                val photoFile = Photo(uri, thumbUri!!)
 
                 paths.add(photoFile)
                 //判断文件夹是否已经存在
                 if (folders.containsKey(folder)) {
                     folders[folder]?.add(photoFile)
                 } else {
-                    val files = ArrayList<PhotoFile>()
+                    val files = ArrayList<Photo>()
                     files.add(photoFile)
                     folders[folder] = files
                 }
@@ -103,7 +100,7 @@ class LocalImageHelper private constructor(private val context: Context) {
         return null
     }
 
-    fun getFolder(folder: String): MutableList<PhotoFile> {
+    fun getFolder(folder: String): MutableList<Photo> {
         return folders[folder]!!
     }
 

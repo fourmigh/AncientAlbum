@@ -1,9 +1,15 @@
 package org.caojun.ancientalbum.activity
 
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_album.*
 import kotlinx.android.synthetic.main.layout_titlebar.*
 import org.caojun.activity.BaseAppCompatActivity
+import org.caojun.adapter.CommonAdapter
+import org.caojun.adapter.bean.AdapterItem
 import org.caojun.ancientalbum.R
+import org.caojun.ancientalbum.adapter.PhotoItem
+import org.caojun.ancientalbum.bean.Photo
+import org.caojun.ancientalbum.utils.LocalImageHelper
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -27,14 +33,26 @@ class AlbumActivity: BaseAppCompatActivity() {
         }
 
         toolbar.title = intent.getStringExtra(Folder_Name)
+
+        readAlbum()
     }
 
     private fun readAlbum() {
         doAsync {
 
+            val photos = LocalImageHelper.instance.folders[toolbar.title]
 
             uiThread {
+                gridView.adapter = object : CommonAdapter<Photo>(photos, 1) {
+                    override fun createItem(type: Any?): AdapterItem<*> {
+                        return PhotoItem(this@AlbumActivity)
+                    }
+                }
 
+                gridView.setOnItemClickListener { parent, view, position, id ->
+                    //TODO
+
+                }
             }
         }
     }
