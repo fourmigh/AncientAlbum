@@ -3,7 +3,7 @@
 buildscript {
     ext.kotlin_version = '1.2.61'
     ext {
-        androidsupport_version = "28.0.0-rc02"
+        androidsupport_version = "28.0.0-rc01"
         buildToolsVersion = "28.0.0"
         sdkVersion = 28
     }

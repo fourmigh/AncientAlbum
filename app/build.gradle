@@ -28,6 +28,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$androidsupport_version"
 //    implementation "com.android.support:support-v4:$androidsupport_version"
+    implementation "com.android.support:design:$androidsupport_version"
     implementation "com.android.support:support-vector-drawable:$androidsupport_version"
     implementation "com.android.support:preference-v7:$androidsupport_version"
     implementation 'org.jetbrains.anko:anko-common:latest.release'
