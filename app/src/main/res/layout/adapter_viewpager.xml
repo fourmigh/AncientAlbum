@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_launcher"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitCenter" />
 
     <!--<org.caojun.ancientalbum.widget.DigitTextView-->
         <!--android:id="@+id/tvTopLeft"-->
