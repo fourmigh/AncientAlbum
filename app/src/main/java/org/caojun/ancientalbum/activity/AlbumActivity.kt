@@ -1,5 +1,8 @@
 package org.caojun.ancientalbum.activity
 
+import android.app.ActivityOptions
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_album.*
 import kotlinx.android.synthetic.main.layout_titlebar.*
@@ -11,6 +14,7 @@ import org.caojun.ancientalbum.adapter.PhotoItem
 import org.caojun.ancientalbum.bean.Photo
 import org.caojun.ancientalbum.utils.LocalImageHelper
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
 /**
@@ -50,8 +54,18 @@ class AlbumActivity: BaseAppCompatActivity() {
                 }
 
                 gridView.setOnItemClickListener { parent, view, position, id ->
-                    //TODO
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        val intent = Intent(this@AlbumActivity, PhotoActivity::class.java)
+                        intent.putExtra(PhotoActivity.Folder_Name, toolbar.title)
+                        intent.putExtra(PhotoActivity.Position, position)
+                        val option = ActivityOptions.makeSceneTransitionAnimation(this@AlbumActivity, view, "transition")
+                        startActivity(intent, option.toBundle())
+                    } else {
+                        startActivity<PhotoActivity>(
+                                PhotoActivity.Folder_Name to toolbar.title,
+                                PhotoActivity.Position to position)
+                    }
                 }
             }
         }

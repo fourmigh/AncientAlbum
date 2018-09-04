@@ -59,7 +59,6 @@ class FoldersActivity: BaseAppCompatActivity() {
                 }
 
                 listView.setOnItemClickListener { parent, view, position, id ->
-                    //TODO
                     startActivity<AlbumActivity>(AlbumActivity.Folder_Name to folders[position].name)
                 }
 
