@@ -30,9 +30,7 @@
             android:id="@+id/tvProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/initializing"
-            android:textColor="@color/gray_6"
-            android:textSize="14sp" />
+            android:text="@string/initializing" />
     </LinearLayout>
 
 </LinearLayout>
