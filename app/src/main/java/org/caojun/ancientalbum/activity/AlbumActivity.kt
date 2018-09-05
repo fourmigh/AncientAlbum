@@ -104,7 +104,7 @@ class AlbumActivity: BaseAppCompatActivity() {
                 if (TextUtils.isEmpty(date)) {
                     val file = File(path)
                     val time = file.lastModified()
-                    date = TimeUtils.getTime("yyyy-mm-dd hh:mm:ss", time)
+                    date = TimeUtils.getTime("yyyy-MM-dd HH:mm:ss", time)
                 }
                 hmDate[uri] = date
             } catch (e: Exception) {
