@@ -12,7 +12,6 @@ import android.net.Uri
 import org.caojun.utils.FileUtils
 import java.io.IOException
 
-
 class LocalImageHelper private constructor(private val context: Context) {
 
     private val paths: MutableList<Photo> = ArrayList()
@@ -47,14 +46,11 @@ class LocalImageHelper private constructor(private val context: Context) {
             val file = File(path)
             //判断大图是否存在
             if (file.exists()) {
-                //小图URI
-                var thumbUri = getThumbnail(id)
                 //获取大图URI
                 val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath(Integer.toString(id)).build().toString()
-                if (TextUtils.isEmpty(uri))
+                if (TextUtils.isEmpty(uri)) {
                     continue
-                if (TextUtils.isEmpty(thumbUri))
-                    thumbUri = uri
+                }
                 //获取目录名
                 val folder = file.parentFile.name
 
@@ -64,7 +60,7 @@ class LocalImageHelper private constructor(private val context: Context) {
                 } catch (e: IOException) {
                     continue
                 }
-                val photoFile = Photo(uri, thumbUri!!, exif)
+                val photoFile = Photo(uri, exif)
 
                 paths.add(photoFile)
                 //判断文件夹是否已经存在
@@ -82,22 +78,22 @@ class LocalImageHelper private constructor(private val context: Context) {
         isRunning = false
     }
 
-    private fun getThumbnail(id: Int): String? {
-        //获取大图的缩略图
-        val cursor = context.contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-                THUMBNAIL_STORE_IMAGE,
-                MediaStore.Images.Thumbnails.IMAGE_ID + " = ?",
-                arrayOf(id.toString() + ""), null)
-        if (cursor!!.count > 0) {
-            cursor.moveToFirst()
-            val thumId = cursor.getInt(0)
-            val uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI.buildUpon().appendPath(Integer.toString(thumId)).build().toString()
-            cursor.close()
-            return uri
-        }
-        cursor.close()
-        return null
-    }
+//    private fun getThumbnail(id: Int): String? {
+//        //获取大图的缩略图
+//        val cursor = context.contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+//                THUMBNAIL_STORE_IMAGE,
+//                MediaStore.Images.Thumbnails.IMAGE_ID + " = ?",
+//                arrayOf(id.toString() + ""), null)
+//        if (cursor!!.count > 0) {
+//            cursor.moveToFirst()
+//            val thumId = cursor.getInt(0)
+//            val uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI.buildUpon().appendPath(Integer.toString(thumId)).build().toString()
+//            cursor.close()
+//            return uri
+//        }
+//        cursor.close()
+//        return null
+//    }
 
     fun getFolder(folder: String): MutableList<Photo> {
         return folders[folder]!!
@@ -109,8 +105,6 @@ class LocalImageHelper private constructor(private val context: Context) {
 
         //大图遍历字段
         private val STORE_IMAGES = arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA)
-        //小图遍历字段
-        private val THUMBNAIL_STORE_IMAGE = arrayOf(MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.DATA)
 
         fun init(context: Context) {
             instance = LocalImageHelper(context)
