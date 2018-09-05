@@ -1,27 +1,21 @@
 package org.caojun.ancientalbum.activity
 
 import android.content.Intent
+import android.media.ExifInterface
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_photo.*
 import kotlinx.android.synthetic.main.layout_titlebar.*
 import org.caojun.activity.BaseAppCompatActivity
-import org.caojun.adapter.CommonPagerAdapter
-import org.caojun.adapter.bean.AdapterItem
 import org.caojun.ancientalbum.R
-import org.caojun.ancientalbum.adapter.ViewPagerItem
-import org.caojun.ancientalbum.bean.Photo
 import org.caojun.ancientalbum.utils.LocalImageHelper
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import android.net.Uri
 import android.provider.MediaStore
-import org.caojun.utils.FileUtils
-import java.io.File
-
+import com.bumptech.glide.Glide
 
 /**
  * 照片原图浏览
@@ -36,6 +30,7 @@ class PhotoActivity: BaseAppCompatActivity() {
 
     private lateinit var title: String
     private lateinit var uriShare: Uri
+    private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +43,7 @@ class PhotoActivity: BaseAppCompatActivity() {
         }
 
         title = intent.getStringExtra(Folder_Name)
-        val position = intent.getIntExtra(Position, 0)
+        position = intent.getIntExtra(Position, 0)
 
         readPhotos(position)
     }
@@ -59,28 +54,34 @@ class PhotoActivity: BaseAppCompatActivity() {
             val photos = LocalImageHelper.instance.getFolder(title)
 
             uiThread {
-                viewPager.adapter = object : CommonPagerAdapter<Photo>(photos) {
-                    override fun createItem(type: Any?): AdapterItem<*> {
-                        return ViewPagerItem(this@PhotoActivity)
-                    }
-                }
+//                viewPager.adapter = object : CommonPagerAdapter<Photo>(photos) {
+//                    override fun createItem(type: Any?): AdapterItem<*> {
+//                        return ViewPagerItem(this@PhotoActivity)
+//                    }
+//                }
+//
+//                viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+//                    override fun onPageScrollStateChanged(state: Int) {
+//                    }
+//
+//                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+//                    }
+//
+//                    override fun onPageSelected(position: Int) {
+//                        toolbar.title = getTitle(position)
+//                        viewPager.tag = position
+//                    }
+//                })
+//
+//                viewPager.currentItem = position
+//                toolbar.title = getTitle(position)
+//                viewPager.tag = position
 
-                viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                    override fun onPageScrollStateChanged(state: Int) {
-                    }
-
-                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                    }
-
-                    override fun onPageSelected(position: Int) {
-                        toolbar.title = getTitle(position)
-                        viewPager.tag = viewPager.currentItem
-                    }
-                })
-
-                viewPager.setCurrentItem(position, false)
                 toolbar.title = getTitle(position)
-                viewPager.tag = viewPager.currentItem
+                Glide.with(this@PhotoActivity).load(photos[position].originalUri).into(imageView)
+
+                val date = photos[position].exif.getAttribute(ExifInterface.TAG_DATETIME)
+                tvBottomRight.text = date
             }
         }
     }
@@ -112,10 +113,12 @@ class PhotoActivity: BaseAppCompatActivity() {
     }
 
     private fun doShareBitmap() {
-        val view = viewPager.findViewWithTag<View>(viewPager.currentItem)
-        view.isDrawingCacheEnabled = true
-        view.buildDrawingCache()
-        val bitmap = view.getDrawingCache(true)
+        clearPhoto()
+//        val view = viewPager.findViewWithTag<View>(viewPager.currentItem)
+//        val root = view.findViewById<View>(R.id.root)
+        root.isDrawingCacheEnabled = true
+        root.buildDrawingCache()
+        val bitmap = root.getDrawingCache(true)
         uriShare = Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, bitmap, null, null))
         var intent = Intent()
         intent.action = Intent.ACTION_SEND//设置分享行为
@@ -125,11 +128,24 @@ class PhotoActivity: BaseAppCompatActivity() {
         startActivityForResult(intent, RequestCode_Share)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        clearPhoto()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode_Share) {
-            contentResolver.delete(uriShare, null, null)
+            clearPhoto()
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun clearPhoto() {
+        try {
+            contentResolver.delete(uriShare, null, null)
+        } catch (e: UninitializedPropertyAccessException) {
+        } catch (e: Exception) {
+        }
     }
 }
