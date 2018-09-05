@@ -1,16 +1,12 @@
 package org.caojun.ancientalbum.utils
 
 import android.content.Context
-import android.media.ExifInterface
 import android.provider.MediaStore
 import android.text.TextUtils
 import org.caojun.ancientalbum.bean.Photo
 import java.io.File
 import java.util.ArrayList
 import java.util.HashMap
-import android.net.Uri
-import org.caojun.utils.FileUtils
-import java.io.IOException
 
 class LocalImageHelper private constructor(private val context: Context) {
 
@@ -54,12 +50,6 @@ class LocalImageHelper private constructor(private val context: Context) {
                 //获取目录名
                 val folder = file.parentFile.name
 
-//                val exif: ExifInterface
-//                try {
-//                    exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
-//                } catch (e: IOException) {
-//                    continue
-//                }
                 val photoFile = Photo(uri)
 
                 paths.add(photoFile)
@@ -77,23 +67,6 @@ class LocalImageHelper private constructor(private val context: Context) {
         cursor.close()
         isRunning = false
     }
-
-//    private fun getThumbnail(id: Int): String? {
-//        //获取大图的缩略图
-//        val cursor = context.contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-//                THUMBNAIL_STORE_IMAGE,
-//                MediaStore.Images.Thumbnails.IMAGE_ID + " = ?",
-//                arrayOf(id.toString() + ""), null)
-//        if (cursor!!.count > 0) {
-//            cursor.moveToFirst()
-//            val thumId = cursor.getInt(0)
-//            val uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI.buildUpon().appendPath(Integer.toString(thumId)).build().toString()
-//            cursor.close()
-//            return uri
-//        }
-//        cursor.close()
-//        return null
-//    }
 
     fun getFolder(folder: String): MutableList<Photo> {
         return folders[folder]!!
