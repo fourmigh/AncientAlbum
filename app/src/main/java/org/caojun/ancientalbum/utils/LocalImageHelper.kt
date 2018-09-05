@@ -48,7 +48,7 @@ class LocalImageHelper private constructor(private val context: Context) {
             //判断大图是否存在
             if (file.exists()) {
                 //小图URI
-                var thumbUri = getThumbnail(id, path)
+                var thumbUri = getThumbnail(id)
                 //获取大图URI
                 val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath(Integer.toString(id)).build().toString()
                 if (TextUtils.isEmpty(uri))
@@ -82,7 +82,7 @@ class LocalImageHelper private constructor(private val context: Context) {
         isRunning = false
     }
 
-    private fun getThumbnail(id: Int, path: String): String? {
+    private fun getThumbnail(id: Int): String? {
         //获取大图的缩略图
         val cursor = context.contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
                 THUMBNAIL_STORE_IMAGE,
