@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.ExifInterface
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import org.caojun.adapter.bean.AdapterItem
 import org.caojun.ancientalbum.R
