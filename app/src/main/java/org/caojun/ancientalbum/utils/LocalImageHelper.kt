@@ -54,13 +54,13 @@ class LocalImageHelper private constructor(private val context: Context) {
                 //获取目录名
                 val folder = file.parentFile.name
 
-                val exif: ExifInterface
-                try {
-                    exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
-                } catch (e: IOException) {
-                    continue
-                }
-                val photoFile = Photo(uri, exif)
+//                val exif: ExifInterface
+//                try {
+//                    exif = ExifInterface(FileUtils.getPath(Uri.parse(uri), context.contentResolver))
+//                } catch (e: IOException) {
+//                    continue
+//                }
+                val photoFile = Photo(uri)
 
                 paths.add(photoFile)
                 //判断文件夹是否已经存在

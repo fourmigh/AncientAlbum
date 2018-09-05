@@ -2,6 +2,8 @@ package org.caojun.ancientalbum.activity
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_album.*
@@ -13,6 +15,7 @@ import org.caojun.ancientalbum.R
 import org.caojun.ancientalbum.adapter.PhotoItem
 import org.caojun.ancientalbum.bean.Photo
 import org.caojun.ancientalbum.utils.LocalImageHelper
+import org.caojun.utils.FileUtils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.uiThread
@@ -56,16 +59,26 @@ class AlbumActivity: BaseAppCompatActivity() {
 
                 gridView.setOnItemClickListener { parent, view, position, id ->
 
+                    val exif: ExifInterface
+                    var date = ""
+                    try {
+                        exif = ExifInterface(FileUtils.getPath(Uri.parse(photos[position].originalUri), contentResolver))
+                        date = exif.getAttribute(ExifInterface.TAG_DATETIME)
+                    } catch (e: Exception) {
+                    }
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         val intent = Intent(this@AlbumActivity, PhotoActivity::class.java)
                         intent.putExtra(PhotoActivity.Folder_Name, toolbar.title)
                         intent.putExtra(PhotoActivity.Position, position)
+                        intent.putExtra(PhotoActivity.Date, date)
                         val option = ActivityOptions.makeSceneTransitionAnimation(this@AlbumActivity, view, "transition")
                         startActivityForResult(intent, RequestCode_ViewPage, option.toBundle())
                     } else {
                         startActivityForResult<PhotoActivity>(RequestCode_ViewPage,
                                 PhotoActivity.Folder_Name to toolbar.title,
-                                PhotoActivity.Position to position)
+                                PhotoActivity.Position to position,
+                                PhotoActivity.Date to date)
                     }
                 }
             }

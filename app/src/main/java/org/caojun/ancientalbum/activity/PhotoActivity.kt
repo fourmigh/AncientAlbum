@@ -1,11 +1,9 @@
 package org.caojun.ancientalbum.activity
 
 import android.content.Intent
-import android.media.ExifInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import kotlinx.android.synthetic.main.activity_photo.*
 import kotlinx.android.synthetic.main.layout_titlebar.*
 import org.caojun.activity.BaseAppCompatActivity
@@ -25,11 +23,13 @@ class PhotoActivity: BaseAppCompatActivity() {
     companion object {
         const val Folder_Name = "Folder_Name"
         const val Position = "Position"
+        const val Date = "Date"
         const val RequestCode_Share = 1
     }
 
     private lateinit var title: String
     private lateinit var uriShare: Uri
+    private lateinit var date: String
     private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +44,7 @@ class PhotoActivity: BaseAppCompatActivity() {
 
         title = intent.getStringExtra(Folder_Name)
         position = intent.getIntExtra(Position, 0)
+        date = intent.getStringExtra(Date)
 
         readPhotos(position)
     }
@@ -54,33 +55,10 @@ class PhotoActivity: BaseAppCompatActivity() {
             val photos = LocalImageHelper.instance.getFolder(title)
 
             uiThread {
-//                viewPager.adapter = object : CommonPagerAdapter<Photo>(photos) {
-//                    override fun createItem(type: Any?): AdapterItem<*> {
-//                        return ViewPagerItem(this@PhotoActivity)
-//                    }
-//                }
-//
-//                viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//                    override fun onPageScrollStateChanged(state: Int) {
-//                    }
-//
-//                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-//                    }
-//
-//                    override fun onPageSelected(position: Int) {
-//                        toolbar.title = getTitle(position)
-//                        viewPager.tag = position
-//                    }
-//                })
-//
-//                viewPager.currentItem = position
-//                toolbar.title = getTitle(position)
-//                viewPager.tag = position
 
                 toolbar.title = getTitle(position)
                 Glide.with(this@PhotoActivity).load(photos[position].originalUri).into(imageView)
 
-                val date = photos[position].exif.getAttribute(ExifInterface.TAG_DATETIME)
                 tvBottomRight.text = date
             }
         }
@@ -90,13 +68,6 @@ class PhotoActivity: BaseAppCompatActivity() {
         val size = LocalImageHelper.instance.getFolder(title).size
         return "(${position + 1}/$size)$title"
     }
-
-//    override fun onBackPressed() {
-//        val intent = Intent()
-//        intent.putExtra(Position, viewPager.currentItem)
-//        setResult(Activity.RESULT_OK, intent)
-//        finish()
-//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.photo, menu)
@@ -114,8 +85,7 @@ class PhotoActivity: BaseAppCompatActivity() {
 
     private fun doShareBitmap() {
         clearPhoto()
-//        val view = viewPager.findViewWithTag<View>(viewPager.currentItem)
-//        val root = view.findViewById<View>(R.id.root)
+
         root.isDrawingCacheEnabled = true
         root.buildDrawingCache()
         val bitmap = root.getDrawingCache(true)
