@@ -58,22 +58,22 @@ class AlbumActivity: BaseAppCompatActivity() {
 
             uiThread {
 
-//                mcListView.adapter = PhotoAdapter(this@AlbumActivity, photos)
-//                mcListView.setOnItemClickListener { parent, view, position, id ->
-//
-//                    doItemClick(photos[position].originalUri, position, view, false)
-//                }
-
-                gridView.adapter = object : CommonAdapter<Photo>(photos, 1) {
-                    override fun createItem(type: Any?): AdapterItem<*> {
-                        return PhotoItem(this@AlbumActivity)
-                    }
-                }
-
-                gridView.setOnItemClickListener { parent, view, position, id ->
+                mcListView.adapter = PhotoAdapter(this@AlbumActivity, photos)
+                mcListView.setOnItemClickListener { parent, view, position, id ->
 
                     doItemClick(photos[position].originalUri, position, view)
                 }
+
+//                gridView.adapter = object : CommonAdapter<Photo>(photos, 1) {
+//                    override fun createItem(type: Any?): AdapterItem<*> {
+//                        return PhotoItem(this@AlbumActivity)
+//                    }
+//                }
+//
+//                gridView.setOnItemClickListener { parent, view, position, id ->
+//
+//                    doItemClick(photos[position].originalUri, position, view)
+//                }
             }
         }
     }
