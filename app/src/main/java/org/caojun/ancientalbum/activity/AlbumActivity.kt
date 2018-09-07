@@ -63,7 +63,6 @@ class AlbumActivity: BaseAppCompatActivity() {
 
                 gridView.setOnItemClickListener { parent, view, position, id ->
 
-//                    var date = hmDate[photos[position].originalUri]
                     val date = getDateTime(photos[position].originalUri)
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

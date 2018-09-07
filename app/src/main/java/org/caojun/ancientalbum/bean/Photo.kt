@@ -1,3 +1,3 @@
 package org.caojun.ancientalbum.bean
 
-data class Photo(val originalUri: String)
+data class Photo(/*val thumbUri: String, */val originalUri: String)
