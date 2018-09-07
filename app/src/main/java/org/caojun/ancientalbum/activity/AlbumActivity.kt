@@ -13,6 +13,7 @@ import org.caojun.activity.BaseAppCompatActivity
 import org.caojun.adapter.CommonAdapter
 import org.caojun.adapter.bean.AdapterItem
 import org.caojun.ancientalbum.R
+import org.caojun.ancientalbum.adapter.PhotoAdapter
 import org.caojun.ancientalbum.adapter.PhotoItem
 import org.caojun.ancientalbum.bean.Photo
 import org.caojun.ancientalbum.utils.LocalImageHelper
@@ -55,14 +56,9 @@ class AlbumActivity: BaseAppCompatActivity() {
             val photos = LocalImageHelper.instance.getFolder(toolbar.title.toString())
 
             uiThread {
-                gridView.adapter = object : CommonAdapter<Photo>(photos, 1) {
-                    override fun createItem(type: Any?): AdapterItem<*> {
-                        return PhotoItem(this@AlbumActivity)
-                    }
-                }
 
-                gridView.setOnItemClickListener { parent, view, position, id ->
-
+                mcListView.adapter = PhotoAdapter(this@AlbumActivity, photos)
+                mcListView.setOnItemClickListener { parent, view, position, id ->
                     val date = getDateTime(photos[position].originalUri)
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -79,6 +75,31 @@ class AlbumActivity: BaseAppCompatActivity() {
                                 PhotoActivity.Date to date)
                     }
                 }
+
+//                gridView.adapter = object : CommonAdapter<Photo>(photos, 1) {
+//                    override fun createItem(type: Any?): AdapterItem<*> {
+//                        return PhotoItem(this@AlbumActivity)
+//                    }
+//                }
+//
+//                gridView.setOnItemClickListener { parent, view, position, id ->
+//
+//                    val date = getDateTime(photos[position].originalUri)
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                        val intent = Intent(this@AlbumActivity, PhotoActivity::class.java)
+//                        intent.putExtra(PhotoActivity.Folder_Name, toolbar.title)
+//                        intent.putExtra(PhotoActivity.Position, position)
+//                        intent.putExtra(PhotoActivity.Date, date)
+//                        val option = ActivityOptions.makeSceneTransitionAnimation(this@AlbumActivity, view, "transition")
+//                        startActivityForResult(intent, RequestCode_ViewPage, option.toBundle())
+//                    } else {
+//                        startActivityForResult<PhotoActivity>(RequestCode_ViewPage,
+//                                PhotoActivity.Folder_Name to toolbar.title,
+//                                PhotoActivity.Position to position,
+//                                PhotoActivity.Date to date)
+//                    }
+//                }
             }
         }
     }

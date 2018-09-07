@@ -39,4 +39,5 @@ dependencies {
     implementation "com.android.support:exifinterface:$androidsupport_version"
     implementation project(':UtilsLibrary')
     implementation project(':AdapterLibrary')
+    implementation project(':WaterfallLibrary')
 }

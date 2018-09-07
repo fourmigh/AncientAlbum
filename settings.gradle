@@ -5,3 +5,6 @@ project(':UtilsLibrary').projectDir = new File(settingsDir, '../CaojunLibrary/Ut
 
 include ':AdapterLibrary'
 project(':AdapterLibrary').projectDir = new File(settingsDir, '../CaojunLibrary/AdapterLibrary')
+
+include ':WaterfallLibrary'
+project(':WaterfallLibrary').projectDir = new File(settingsDir, '../CaojunLibrary/WaterfallLibrary')
